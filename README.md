@@ -98,6 +98,12 @@ The policy behaviour can be influenced by these environment variables:
   * `TRUSTED_GROUPS`: comma separated list of groups who are allowed to create
     privileged containers. Optional.
 
+# Obtain policy
+
+The policy is automatically published as an OCI artifact inside of
+[this](https://github.com/orgs/chimera-kube/packages/container/package/policies%2Fpod-privileged)
+container registry:
+
 # Building
 
 This policy is written using [AssemblyScript](https://www.assemblyscript.org/).
