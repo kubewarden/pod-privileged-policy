@@ -71,23 +71,6 @@ spec:
     command: ["sleep", "1h"]
 ```
 
-Finally, this Pod specification has a top level security
-context that leads to the creation of a privileged container:
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx
-spec:
-  securityContext:
-      privileged: true
-  containers:
-  - name: nginx
-    image: nginx
-    imagePullPolicy: IfNotPresent
-```
-
 
 # Configuration
 
