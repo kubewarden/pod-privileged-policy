@@ -37,9 +37,7 @@ function hasPrivilegedSecurityContext(value: JSON.Value): bool {
   return privileged._bool;
 }
 
-export function validate(config: PolicyConfig, rawRequest: string): string {
-  let req = JSON.parse(rawRequest) as JSON.Obj;
-
+export function validate(config: PolicyConfig, req: JSON.Obj): string {
   let reqKind = req.get("requestKind") as JSON.Obj;
   let kind = reqKind.get("kind") as JSON.Str;
   if (kind._str != "Pod") {

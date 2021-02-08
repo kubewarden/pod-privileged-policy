@@ -1,23 +1,27 @@
-import "wasi";
+import { JSON } from "assemblyscript-json";
 import { PolicyConfig } from "./policy_config";
 import { validate } from "./validate";
-import { Console, Environ } from "as-wasi"
 
-function initConfig(): PolicyConfig {
-  let env = new Environ();
-  let trustedUsers = env.get("TRUSTED_USERS");
-  if (trustedUsers == null) {
-    trustedUsers = "";
-  }
+import {
+  register,
+  handleCall,
+  handleAbort,
+} from "@wapc/as-guest";
 
-  let trustedGroups = env.get("TRUSTED_GROUPS");
-  if (trustedGroups == null) {
-    trustedGroups = "";
-  }
-  return new PolicyConfig(trustedUsers!, trustedGroups!);
+register("validate", function (payload: ArrayBuffer): ArrayBuffer {
+  let validation_request = JSON.parse(String.UTF8.decode(payload, false)) as JSON.Obj;
+  let config = new PolicyConfig(validation_request.get("settings") as JSON.Obj);
+  let req = validation_request.get("request") as JSON.Obj;
+
+  return String.UTF8.encode(validate(config, req));
+})
+
+// This must be present in the entry file.
+export function __guest_call(operation_size: usize, payload_size: usize): bool {
+  return handleCall(operation_size, payload_size);
 }
 
-let config = initConfig();
-let request = Console.readAll()!;
-
-Console.log(validate(config, request));
+// Abort function
+function abort(message: string | null, fileName: string | null, lineNumber: u32, columnNumber: u32): void {
+  handleAbort(message, fileName, lineNumber, columnNumber)
+}

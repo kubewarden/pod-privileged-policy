@@ -76,9 +76,21 @@ spec:
 
 The policy behaviour can be influenced by these environment variables:
 
-  * `TRUSTED_USERS`: comma separated list of users who are allowed to create
+The policy can be configured with the following data structure:
+
+```yml
+trusted_users: # list of users
+- alice
+trusted_groups: # list of groups
+- administrators
+- system:masters
+```
+
+Let's go through each field:
+
+  * `trusted_users`: list of users who are allowed to create
     privileged containers. Optional.
-  * `TRUSTED_GROUPS`: comma separated list of groups who are allowed to create
+  * `trusted_groups`: list of groups who are allowed to create
     privileged containers. Optional.
 
 # Obtain policy
@@ -110,22 +122,31 @@ This will produce the following Wasm binaries:
   * `build/optimized.wasm`: binary built with release optimizations
   * `build/untouched.wasm`: binary built without optimizations
 
+# Using the policy
+
+The easiest way to use this policy is through the [chimera-controller](https://github.com/chimera-kube/chimera-controller).
+
 # Trying the policy
 
-The policy is a stand-alone Wasm module, you can invoke it in this way:
+The policy can be ran outside of Chimera's [policy-server](https://github.com/chimera-kube/policy-server)
+by using the [chimera-policy-testdrive](https://github.com/chimera-kube/chimera-policy-testdrive)
+CLI tool:
 
 ```shell
-$ cat assembly/__tests__/fixtures/privileged_container.json  | wasmtime run \
-              --env TRUSTED_USERS="alice" \
-              --env TRUSTED_GROUPS="trusted-users,system:masters" \
-              build/optimized.wasm
+$ chimera-policy-testdrive \
+    --policy build/optimized.wasm \
+    --request-file assembly/__tests__/fixtures/privileged_container.json \
+    --settings '{"trusted_users": ["kubernetes-admin"], "trusted_groups": ["system:masters"]}'
 ```
 
 This will produce the following output:
 
 ```shell
-{"accepted":true,"message":""}
+ValidationResponse { accepted: true, message: Some(""), code: None }
 ```
+
+You can find more example files under the `assembly/__tests__/fixtures/`
+directory.
 
 # Testing
 
@@ -134,14 +155,3 @@ Unit tests can be run via:
 ```shell
 $ make test
 ```
-
-# Benchmark
-
-Some benchmarks can be run via this command:
-
-```
-$ make bench
-```
-
-The benchmarks rely on [hyperfine](https://github.com/sharkdp/hyperfine). The
-make file will automatically install it using [Cargo](https://doc.rust-lang.org/cargo/).
