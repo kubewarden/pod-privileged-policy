@@ -160,7 +160,7 @@ describe("validate", () => {
     let res = new ValidationResponse(rawRes);
 
     expect(res.accepted).toBe(false);
-    expect(res.message).toBe("User cannot schedule privileged containers");
+    expect(res.message).toBe("User 'kubernetes-admin' cannot schedule privileged containers");
   });
 
   it("should deny privileged containers from untrusted users", () => {
@@ -179,7 +179,7 @@ describe("validate", () => {
     let res = new ValidationResponse(rawRes);
 
     expect(res.accepted).toBe(false);
-    expect(res.message).toBe("User cannot schedule privileged containers");
+    expect(res.message).toBe("User 'kubernetes-admin' cannot schedule privileged containers");
   });
 
 });

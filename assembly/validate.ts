@@ -81,5 +81,5 @@ export function validate(config: PolicyConfig, req: JSON.Obj): string {
     }
   }
 
-  return rejectRequest("User cannot schedule privileged containers");
+  return rejectRequest("User '" + username._str + "' cannot schedule privileged containers");
 }
