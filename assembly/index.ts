@@ -1,5 +1,4 @@
 import { JSON } from "assemblyscript-json";
-import { PolicyConfig } from "./policy_config";
 import { validate } from "./validate";
 
 import {
@@ -10,10 +9,9 @@ import {
 
 register("validate", function (payload: ArrayBuffer): ArrayBuffer {
   let validation_request = JSON.parse(String.UTF8.decode(payload, false)) as JSON.Obj;
-  let config = new PolicyConfig(validation_request.get("settings") as JSON.Obj);
   let req = validation_request.get("request") as JSON.Obj;
 
-  return String.UTF8.encode(validate(config, req));
+  return String.UTF8.encode(validate(req));
 })
 
 // This must be present in the entry file.

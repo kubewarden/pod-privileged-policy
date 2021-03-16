@@ -71,28 +71,6 @@ spec:
     command: ["sleep", "1h"]
 ```
 
-
-# Configuration
-
-The policy behaviour can be influenced by these environment variables:
-
-The policy can be configured with the following data structure:
-
-```yml
-trusted_users: # list of users
-- alice
-trusted_groups: # list of groups
-- administrators
-- system:masters
-```
-
-Let's go through each field:
-
-  * `trusted_users`: list of users who are allowed to create
-    privileged containers. Optional.
-  * `trusted_groups`: list of groups who are allowed to create
-    privileged containers. Optional.
-
 # Obtain policy
 
 The policy is automatically published as an OCI artifact inside of
@@ -135,8 +113,7 @@ CLI tool:
 ```shell
 $ chimera-policy-testdrive \
     --policy build/optimized.wasm \
-    --request-file assembly/__tests__/fixtures/privileged_container.json \
-    --settings '{"trusted_users": ["kubernetes-admin"], "trusted_groups": ["system:masters"]}'
+    --request-file assembly/__tests__/fixtures/privileged_container.json
 ```
 
 This will produce the following output:
