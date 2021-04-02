@@ -35,8 +35,9 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
-      - name: Publish Wasm policy artifact to OCI registry with the 'latest' tag
+          password: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: Publish Wasm policy artifact to OCI registry with the 'latest' tag
         if: ${{ startsWith(github.ref, 'refs/heads/') }}
         run: |
           ./linux-amd64-wasm-to-oci push build/optimized.wasm ghcr.io/kubewarden/policies/pod-privileged:latest
