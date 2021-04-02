@@ -1,9 +1,9 @@
 on:
   push:
     branches:
-    - main
+      - main
     tags:
-    - 'v*'
+      - "v*"
 
 name: publish Wasm module
 
@@ -12,31 +12,25 @@ jobs:
     name: Create new release with the Wasm artifact
     runs-on: ubuntu-20.04
     steps:
-      -
-        name: Checkout code
+      - name: Checkout code
         uses: actions/checkout@v2
-      -
-        name: Download wasm-to-oci
+      - name: Download wasm-to-oci
         uses: i3h/download-release-asset@v1
         with:
           owner: engineerd
           repo: wasm-to-oci
           tag: v0.1.1
           file: linux-amd64-wasm-to-oci
-      -
-        name: fix wasm-to-oci permissions
+      - name: fix wasm-to-oci permissions
         run: |
           chmod 755 linux-amd64-wasm-to-oci
-      -
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
         with:
-          node-version: '14'
+          node-version: "14"
       - run: npm install
-      -
-        name: Build Wasm modules
+      - name: Build Wasm modules
         run: npm run asbuild
-      -
-        name: Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
@@ -46,15 +40,13 @@ jobs:
         name: Publish Wasm policy artifact to OCI registry with the 'latest' tag
         if: ${{ startsWith(github.ref, 'refs/heads/') }}
         run: |
-          ./linux-amd64-wasm-to-oci push build/optimized.wasm ghcr.io/chimera-kube/policies/pod-privileged:latest
-      -
-        name: Publish Wasm policy artifact to OCI registry with the version tag
+          ./linux-amd64-wasm-to-oci push build/optimized.wasm ghcr.io/kubewarden/policies/pod-privileged:latest
+      - name: Publish Wasm policy artifact to OCI registry with the version tag
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         run: |
           export OCI_TAG=$(echo $GITHUB_REF | sed -e "s|refs/tags/||")
-          ./linux-amd64-wasm-to-oci push build/optimized.wasm ghcr.io/chimera-kube/policies/pod-privileged:${OCI_TAG}
-      -
-        name: Create Release
+          ./linux-amd64-wasm-to-oci push build/optimized.wasm ghcr.io/kubewarden/policies/pod-privileged:${OCI_TAG}
+      - name: Create Release
         id: create_release
         if: ${{ startsWith(github.ref, 'refs/tags/v') }}
         uses: actions/create-release@v1
@@ -65,8 +57,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-      -
-        name: Upload Release Asset
+      - name: Upload Release Asset
         id: upload-release-asset
         if: ${{ startsWith(github.ref, 'refs/tags/v') }}
         uses: actions/upload-release-asset@v1
