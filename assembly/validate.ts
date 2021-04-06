@@ -22,6 +22,16 @@ function rejectRequest(message: string): string {
   return encoder.toString();
 }
 
+export function settingsValidated(): string {
+  let encoder = new JSONEncoder();
+
+  encoder.pushObject("");
+  encoder.setBoolean("valid", true);
+  encoder.popObject();
+
+  return encoder.toString();
+}
+
 function hasPrivilegedSecurityContext(value: JSON.Value): bool {
   let obj = changetype<JSON.Obj>(value);
   if (!obj.has("securityContext")) {

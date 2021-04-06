@@ -1,5 +1,5 @@
 import { JSON } from "assemblyscript-json";
-import { validate } from "./validate";
+import { validate, settingsValidated } from "./validate";
 
 import {
   register,
@@ -12,6 +12,10 @@ register("validate", function (payload: ArrayBuffer): ArrayBuffer {
   let req = validation_request.get("request") as JSON.Obj;
 
   return String.UTF8.encode(validate(req));
+})
+
+register("validate_settings", function (payload: ArrayBuffer): ArrayBuffer {
+  return String.UTF8.encode(settingsValidated());
 })
 
 // This must be present in the entry file.
