@@ -68,3 +68,9 @@ jobs:
           asset_path: build/optimized.wasm
           asset_name: policy.wasm
           asset_content_type: application/wasm
+      -
+        name: Notify policy-hub
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        uses: kubewarden/notify-policy-hub@main
+        with:
+          PAT: ${{ secrets.WORKFLOW_PAT }}
