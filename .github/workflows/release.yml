@@ -73,4 +73,5 @@ jobs:
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         uses: kubewarden/notify-policy-hub@main
         with:
+          USERNAME: chimera-kube-bot
           PAT: ${{ secrets.WORKFLOW_PAT }}
