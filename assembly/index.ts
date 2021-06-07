@@ -18,6 +18,11 @@ register("validate_settings", function (payload: ArrayBuffer): ArrayBuffer {
   return String.UTF8.encode(settingsValidated());
 })
 
+register("protocol_version", function (payload: ArrayBuffer): ArrayBuffer {
+  return String.UTF8.encode('"v1"');
+})
+
+
 // This must be present in the entry file.
 export function __guest_call(operation_size: usize, payload_size: usize): bool {
   return handleCall(operation_size, payload_size);
