@@ -1,0 +1,16 @@
+rules:
+  - apiGroups: [""]
+    apiVersions: ["v1"]
+    resources: ["pods"]
+    operations: ["CREATE"] # kubernetes doesn't allow to add/remove privileged containers to an already running pod
+mutating: false
+annotations:
+  io.kubewarden.policy.title: pod-privileged
+  io.kubewarden.policy.description: Limit the ability to create privileged containers
+  io.kubewarden.policy.author: Flavio Castelli
+  io.kubewarden.policy.url: https://github.com/kubewarden/pod-privileged-policy
+  io.kubewarden.policy.source: https://github.com/kubewarden/pod-privileged-policy
+  io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.usage: |
+    This policy doesn't have a configuration. Once enforced, it will reject
+    the creation of Pods that have at least a privileged container defined.
