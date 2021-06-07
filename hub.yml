@@ -5,10 +5,11 @@ author:
   name: Kubewarden devs
   homepage: https://github.com/kubewarden
 download:
-  registry: ghcr.io/kubewarden/policies/pod-privileged-policy:__TAG__
+  registry: ghcr.io/kubewarden/policies/pod-privileged:__TAG__
   url: https://github.com/kubewarden/pod-privileged-policy/releases/download/__TAG__/policy.wasm
 keywords:
   - PSP
+  - Pod
   - Container
   - Privileged
 resources:
