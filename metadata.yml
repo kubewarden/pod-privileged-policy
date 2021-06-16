@@ -4,6 +4,7 @@ rules:
     resources: ["pods"]
     operations: ["CREATE"] # kubernetes doesn't allow to add/remove privileged containers to an already running pod
 mutating: false
+contextAware: false
 annotations:
   io.kubewarden.policy.title: pod-privileged
   io.kubewarden.policy.description: Limit the ability to create privileged containers
