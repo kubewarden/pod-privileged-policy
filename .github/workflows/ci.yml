@@ -107,13 +107,13 @@ jobs:
       - name: Publish Wasm policy artifact to OCI registry with the 'latest' tag
         if: startsWith(github.ref, 'refs/heads/')
         run: |
-          ./kwctl push -p policy.wasm registry://${{ env.OCI_TARGET }}:latest
+          ./kwctl push policy.wasm ${{ env.OCI_TARGET }}:latest
 
       - name: Publish Wasm policy artifact to OCI registry with the version tag and 'latest'
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           export OCI_TAG=$(echo $GITHUB_REF | sed -e "s|refs/tags/||")
-          ./kwctl push -p policy.wasm registry://${{ env.OCI_TARGET }}:${OCI_TAG}
+          ./kwctl push policy.wasm ${{ env.OCI_TARGET }}:${OCI_TAG}
 
   release:
     needs: tests
