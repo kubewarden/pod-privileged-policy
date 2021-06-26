@@ -15,4 +15,4 @@ keywords:
 resources:
   - Pod
 mutation: false
-context-aware: false
+contextAware: false
