@@ -1,12 +1,24 @@
-.PHONY: build
-build:
-	npm run asbuild
+SOURCE_FILES := $(shell find . -type f -name '*.ts' -o -name '*.json' -o -name '*.js')
 
+.PHONY: deps
+deps:
+	npm i assemblyscript
+
+policy.wasm: $(SOURCE_FILES)
+	npm run asbuild
+	mv ./build/optimized.wasm policy.wasm
+
+.PHONY: test
 test:
 	npx asp
 
-annotate:
-	kwctl annotate -m metadata.yml -o policy.wasm ./build/optimized.wasm
+annotated-policy.wasm: policy.wasm metadata.yml
+	kwctl annotate -m metadata.yml -o annotated-policy.wasm policy.wasm
 
-e2e-tests:
+.PHONY: e2e-tests
+e2e-tests: annotated-policy.wasm
 	bats e2e.bats
+
+.PHONY: clean
+clean:
+	rm *.wasm
