@@ -108,13 +108,12 @@ The easiest way to use this policy is through the [kubewarden-controller](https:
 # Trying the policy
 
 The policy can be ran outside of Kubewarden's [policy-server](https://github.com/kubewarden/policy-server)
-by using [policy-testdrive](https://github.com/kubewarden/policy-server/tree/main/crates/policy-testdrive)
+by using [kwctl](https://github.com/kubewarden/kwctl)
 CLI tool:
 
 ```shell
-$ policy-testdrive \
-    --policy build/optimized.wasm \
-    --request-file assembly/__tests__/fixtures/privileged_container.json
+$ kwctl run annotated-policy.wasm \
+   -r assembly/__tests__/fixtures/privileged_container.json
 ```
 
 This will produce the following output:
