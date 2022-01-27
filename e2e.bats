@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 @test "reject because privileged container" {
-  run kwctl run policy.wasm -r assembly/__tests__/fixtures/privileged_container.json
+  run kwctl run annotated-policy.wasm -r assembly/__tests__/fixtures/privileged_container.json
 
   # this prints the output when one the checks below fails
   echo "output = ${output}"
@@ -14,7 +14,7 @@
 }
 
 @test "accept" {
-  run kwctl run policy.wasm -r assembly/__tests__/fixtures/no_privileged_containers.json
+  run kwctl run annotated-policy.wasm -r assembly/__tests__/fixtures/no_privileged_containers.json
   # this prints the output when one the checks below fails
   echo "output = ${output}"
 
