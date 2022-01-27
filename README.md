@@ -97,7 +97,8 @@ $ make build
 
 This will produce the following Wasm binaries:
 
-  * `build/optimized.wasm`: binary built with release optimizations
+  * `policy.wasm`: binary built with release optimizations, copied from
+    `build/optimized.wasm`
   * `build/untouched.wasm`: binary built without optimizations
 
 # Using the policy
