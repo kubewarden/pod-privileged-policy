@@ -14,7 +14,7 @@
   "devDependencies": {
     "@as-pect/cli": "^4.0.0",
     "as-wasi": "^0.4.4",
-    "assemblyscript": "^0.17.14",
+    "assemblyscript": "0.19.22",
     "assemblyscript-json": "^0.4.0"
   },
   "dependencies": {
