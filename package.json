@@ -12,7 +12,7 @@
   "author": "Flavio Castelli",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@as-pect/cli": "^4.0.0",
+    "@as-pect/cli": "6.2.4",
     "as-wasi": "^0.4.4",
     "assemblyscript": "^0.17.14",
     "assemblyscript-json": "^0.4.0"
