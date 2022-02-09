@@ -15,7 +15,7 @@
     "@as-pect/cli": "^4.0.0",
     "as-wasi": "^0.4.4",
     "assemblyscript": "^0.17.14",
-    "assemblyscript-json": "^0.4.0"
+    "assemblyscript-json": "1.1.0"
   },
   "dependencies": {
     "@assemblyscript/loader": "^0.17.14",
