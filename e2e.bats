@@ -9,7 +9,7 @@
   # request rejected
   [ "$status" -eq 0 ]
   [ $(expr "$output" : '.*allowed.*false') -ne 0 ]
-  [ $(expr "$output" : '.*cannot schedule privileged containers.*') -ne 0 ]
+  [ $(expr "$output" : '.*Privileged containers are not allowed*') -ne 0 ]
 
 }
 

@@ -76,5 +76,5 @@ export function validate(req: JSON.Obj): string {
   let userInfo = req.get("userInfo") as JSON.Obj;
   let username = userInfo.get("username") as JSON.Str;
 
-  return rejectRequest("User '" + username._str + "' cannot schedule privileged containers");
+  return rejectRequest("Privileged containers are not allowed");
 }
