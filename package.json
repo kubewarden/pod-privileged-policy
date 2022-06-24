@@ -13,12 +13,12 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@as-pect/cli": "^4.0.0",
-    "as-wasi": "^0.4.4",
-    "assemblyscript": "^0.17.14",
+    "as-wasi": "0.4.6",
+    "assemblyscript": "0.20.13",
     "assemblyscript-json": "^0.4.0"
   },
   "dependencies": {
-    "@assemblyscript/loader": "^0.17.14",
+    "@assemblyscript/loader": "^0.20.0",
     "@wapc/as-guest": "^0.2.1"
   }
 }
