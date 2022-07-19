@@ -1,0 +1,35 @@
+---
+version: 0.1.9
+name: pod-privileged-policy
+displayName: Pod Privileged Policy
+createdAt: '2022-07-19T16:04:10+02:00'
+description: Limit the ability to create privileged containers
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/pod-privileged-policy
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/pod-privileged:v0.1.9
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl/):
+
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/pod-privileged:v0.1.9
+  ```
+keywords:
+- psp
+- pod
+- container
+- privileged
+links:
+- name: policy
+  url: https://github.com/kubewarden/pod-privileged-policy/releases/download/v0.1.9/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/pod-privileged-policy
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/resources: Pod
+  kubewarden/mutation: false
+  kubewarden/contextAware: false
