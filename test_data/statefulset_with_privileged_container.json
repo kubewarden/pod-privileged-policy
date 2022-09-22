@@ -1,0 +1,39 @@
+{
+  "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
+  "kind": {
+    "kind": "StatefulSet",
+    "version": "v1"
+  },
+  "object": {
+    "metadata": {
+      "name": "nginx"
+    },
+    "spec": {
+      "template": {
+        "spec": {
+          "containers": [
+            {
+              "image": "nginx",
+              "name": "nginx",
+              "securityContext": {
+                "privileged": true
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "operation": "CREATE",
+  "requestKind": {
+    "version": "v1",
+    "kind": "StatefulSet"
+  },
+  "userInfo": {
+    "username": "alice",
+    "uid": "alice-uid",
+    "groups": [
+      "system:authenticated"
+    ]
+  }
+}

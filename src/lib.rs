@@ -32,10 +32,10 @@ fn validate(payload: &[u8]) -> CallResult {
     let validation_request: ValidationRequest<Settings> = ValidationRequest::new(payload)?;
     info!(LOG_DRAIN, "starting validation");
 
-    match serde_json::from_value::<apicore::Pod>(validation_request.request.object) {
-        Ok(pod) => {
-            if let Some(pod_spec) = &pod.spec {
-                return match validate_pod(pod_spec) {
+    match validation_request.extract_pod_spec_from_object() {
+        Ok(pod_spec) => {
+            if let Some(pod_spec) = pod_spec {
+                return match validate_pod(&pod_spec) {
                     Ok(_) => kubewarden::accept_request(),
                     Err(err) => kubewarden::reject_request(Some(err.to_string()), None, None, None),
                 };

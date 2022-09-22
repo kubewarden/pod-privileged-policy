@@ -22,3 +22,28 @@
   [ "$status" -eq 0 ]
   [ $(expr "$output" : '.*allowed.*true') -ne 0 ]
 }
+
+
+@test "reject deployment because privileged container" {
+  run kwctl run annotated-policy.wasm -r test_data/deployment_with_privileged_containers.json
+
+  # this prints the output when one the checks below fails
+  echo "output = ${output}"
+
+  # request rejected
+  [ "$status" -eq 0 ]
+  [ $(expr "$output" : '.*allowed.*false') -ne 0 ]
+  [ $(expr "$output" : '.*Privileged container is not allowed*') -ne 0 ]
+}
+
+@test "reject statefulset because privileged container" {
+  run kwctl run annotated-policy.wasm -r test_data/statefulset_with_privileged_container.json
+
+  # this prints the output when one the checks below fails
+  echo "output = ${output}"
+
+  # request rejected
+  [ "$status" -eq 0 ]
+  [ $(expr "$output" : '.*allowed.*false') -ne 0 ]
+  [ $(expr "$output" : '.*Privileged container is not allowed*') -ne 0 ]
+}
