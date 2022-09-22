@@ -1,7 +1,7 @@
 rules:
   - apiGroups: [""]
     apiVersions: ["v1"]
-    resources: ["pods"]
+    resources: ["deployment","replicaset","statefulset","daemonset","replicationcontroller","job","cronjob","pod"]
     operations: ["CREATE"] # kubernetes doesn't allow to add/remove privileged containers to an already running pod
 mutating: false
 contextAware: false

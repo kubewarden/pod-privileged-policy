@@ -30,6 +30,11 @@ configured as privileged in their [SecurityContext](https://kubernetes.io/docs/t
 
 This policy has no configurable settings.
 
+The user is responsible to configure the policy defining the resources targeted
+by the policy. Otherwise, the policy will not be able to run. The current supported
+resources are listed in the metadata.yml file. See more information about how to
+configure a policy in the [Kubewarden documentation](https://docs.kubewarden.io/).
+
 # Examples
 
 The following Pod specification doesn't have any security context defined:
