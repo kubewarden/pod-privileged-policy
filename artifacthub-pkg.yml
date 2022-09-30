@@ -1,5 +1,5 @@
 ---
-version: 0.2.1
+version: 0.2.2
 name: pod-privileged-policy
 displayName: Pod Privileged Policy
 createdAt: '2022-07-19T16:04:10+02:00'
@@ -8,7 +8,7 @@ license: Apache-2.0
 homeURL: https://github.com/kubewarden/pod-privileged-policy
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/pod-privileged:v0.2.1
+  image: ghcr.io/kubewarden/policies/pod-privileged:v0.2.2
 keywords:
 - psp
 - pod
@@ -16,7 +16,7 @@ keywords:
 - privileged
 links:
 - name: policy
-  url: https://github.com/kubewarden/pod-privileged-policy/releases/download/v0.2.1/policy.wasm
+  url: https://github.com/kubewarden/pod-privileged-policy/releases/download/v0.2.2/policy.wasm
 - name: source
   url: https://github.com/kubewarden/pod-privileged-policy
 provider:
