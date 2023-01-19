@@ -1,7 +1,3 @@
-Continuous integration | License
- -----------------------|--------
-![Continuous integration](https://github.com/kubewarden/pod-privileged-policy/workflows/Continuous%20integration/badge.svg) | [![License: Apache 2.0](https://img.shields.io/badge/License-Apache2.0-brightgreen.svg)](https://opensource.org/licenses/Apache-2.0)
-
 Given the following scenario:
 
 > As an operator of a Kubernetes cluster used by multiple users,
@@ -74,67 +70,3 @@ spec:
     command: ["sleep", "1h"]
 ```
 
-# Obtain policy
-
-The policy is automatically published as an OCI artifact inside of
-[this](https://github.com/orgs/kubewarden/packages/container/package/policies%2Fpod-privileged)
-container registry.
-
-# Building
-
-This policy is written using [Rust](https://www.rust-lang.org/). Building can be done using this command:
-
-```
-$ make
-```
-
-This will produce the `policy.wasm` binary built with release optimizations,
-copied from `target/wasm32-unknown-unknown/release/`
-
-# Using the policy
-
-The easiest way to use this policy is through the [kubewarden-controller](https://github.com/kubewarden/kubewarden-controller).
-
-# Trying the policy
-
-The policy can be ran outside of Kubewarden's [policy-server](https://github.com/kubewarden/policy-server)
-by using [kwctl](https://github.com/kubewarden/kwctl) CLI tool:
-
-```shell
-$ make
-$ kwctl run annotated-policy.wasm -r test_data/privileged_container.json
-```
-
-This will produce the following output:
-
-```shell
-{"uid":"1299d386-525b-4032-98ae-1949f69f9cfc","allowed":false,"status":{"message":"Privileged container is not allowed"},"auditAnnotations":null,"warnings":null}
-```
-
-You can find more example files under the `test_data` directory.
-
-# Testing
-
-Unit tests can be run via:
-
-```shell
-$ make test e2e-test
-```
-
-# License
-
-```
-Copyright (C) 2022 SUSE LLC
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```

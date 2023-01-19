@@ -28,7 +28,3 @@ jobs:
     with:
       input-wasm: pod_privileged_policy
       oci-target: ghcr.io/kubewarden/policies/pod-privileged
-    
-    secrets:
-      workflow-pat: ${{ secrets.WORKFLOW_PAT }}
-    
