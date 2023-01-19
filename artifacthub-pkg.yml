@@ -2,7 +2,7 @@
 version: 0.2.3
 name: pod-privileged-policy
 displayName: Pod Privileged Policy
-createdAt: '2022-07-19T16:04:10+02:00'
+createdAt: '2023-01-19T14:46:21+02:00'
 description: Limit the ability to create privileged containers
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/pod-privileged-policy
