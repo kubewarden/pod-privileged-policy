@@ -1,14 +1,14 @@
 ---
-version: 0.2.3
+version: 0.2.4
 name: pod-privileged-policy
 displayName: Pod Privileged Policy
-createdAt: '2023-01-19T14:46:21+02:00'
+createdAt: '2023-02-06T14:46:21+02:00'
 description: Limit the ability to create privileged containers
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/pod-privileged-policy
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/pod-privileged:v0.2.3
+  image: ghcr.io/kubewarden/policies/pod-privileged:v0.2.4
 keywords:
 - psp
 - pod
@@ -16,7 +16,7 @@ keywords:
 - privileged
 links:
 - name: policy
-  url: https://github.com/kubewarden/pod-privileged-policy/releases/download/v0.2.3/policy.wasm
+  url: https://github.com/kubewarden/pod-privileged-policy/releases/download/v0.2.4/policy.wasm
 - name: source
   url: https://github.com/kubewarden/pod-privileged-policy
 provider:
