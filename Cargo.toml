@@ -2,7 +2,7 @@
 name = "pod-privileged-policy"
 version = "0.2.4"
 authors = ["José Guilherme Vanz <jguilhermevanz@suse.com>"]
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -11,7 +11,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 anyhow = "1.0"
-k8s-openapi = { version = "0.16.0", default_features = false, features = ["v1_24"] }
+k8s-openapi = { version = "0.17.0", default_features = false, features = ["v1_24"] }
 kubewarden-policy-sdk = "0.9.1"
 lazy_static = "1.4"
 serde = { version = "1.0", features = ["derive"] }
