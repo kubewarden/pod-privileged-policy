@@ -1,14 +1,19 @@
----
-version: 0.2.4
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 0.2.5
 name: pod-privileged-policy
 displayName: Pod Privileged Policy
-createdAt: '2023-02-06T14:46:21+02:00'
+createdAt: 2023-03-21T11:39:45.702098839Z
 description: Limit the ability to create privileged containers
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/pod-privileged-policy
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/pod-privileged:v0.2.4
+  image: ghcr.io/kubewarden/policies/pod-privileged:v0.2.5
 keywords:
 - psp
 - pod
@@ -16,32 +21,61 @@ keywords:
 - privileged
 links:
 - name: policy
-  url: https://github.com/kubewarden/pod-privileged-policy/releases/download/v0.2.4/policy.wasm
+  url: https://github.com/kubewarden/pod-privileged-policy/releases/download/v0.2.5/policy.wasm
 - name: source
   url: https://github.com/kubewarden/pod-privileged-policy
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/pod-privileged:v0.2.5
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
 provider:
   name: kubewarden
 recommendations:
 - url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
 annotations:
+  kubewarden/mutation: 'false'
   kubewarden/resources: Pod
-  kubewarden/mutation: false
-  kubewarden/contextAware: false
   kubewarden/rules: |
-    rules:
-      - apiGroups: [""]
-        apiVersions: ["v1"]
-        resources: ["pods"]
-        operations: ["CREATE"] # kubernetes doesn't allow to add/remove privileged containers to an already running pod
-      - apiGroups: [""]
-        apiVersions: ["v1"]
-        resources: ["replicationcontrollers"]
-        operations: ["CREATE", "UPDATE"]
-      - apiGroups: ["apps"]
-        apiVersions: ["v1"]
-        resources: ["deployments","replicasets","statefulsets","daemonsets"]
-        operations: ["CREATE", "UPDATE"]
-      - apiGroups: ["batch"]
-        apiVersions: ["v1"]
-        resources: ["jobs","cronjobs"]
-        operations: ["CREATE", "UPDATE"]
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - pods
+      operations:
+      - CREATE
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - replicationcontrollers
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - apps
+      apiVersions:
+      - v1
+      resources:
+      - deployments
+      - replicasets
+      - statefulsets
+      - daemonsets
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - batch
+      apiVersions:
+      - v1
+      resources:
+      - jobs
+      - cronjobs
+      operations:
+      - CREATE
+      - UPDATE
