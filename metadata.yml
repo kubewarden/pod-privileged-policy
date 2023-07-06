@@ -1,20 +1,43 @@
 rules:
-  - apiGroups: [""]
-    apiVersions: ["v1"]
-    resources: ["pods"]
-    operations: ["CREATE"] # kubernetes doesn't allow to add/remove privileged containers to an already running pod
-  - apiGroups: [""]
-    apiVersions: ["v1"]
-    resources: ["replicationcontrollers"]
-    operations: ["CREATE", "UPDATE"]
-  - apiGroups: ["apps"]
-    apiVersions: ["v1"]
-    resources: ["deployments","replicasets","statefulsets","daemonsets"]
-    operations: ["CREATE", "UPDATE"]
-  - apiGroups: ["batch"]
-    apiVersions: ["v1"]
-    resources: ["jobs","cronjobs"]
-    operations: ["CREATE", "UPDATE"]
+  - apiGroups:
+      - ''
+    apiVersions:
+      - v1
+    resources:
+      - pods
+    operations:
+      - CREATE
+  - apiGroups:
+      - ''
+    apiVersions:
+      - v1
+    resources:
+      - replicationcontrollers
+    operations:
+      - CREATE
+      - UPDATE
+  - apiGroups:
+      - apps
+    apiVersions:
+      - v1
+    resources:
+      - deployments
+      - replicasets
+      - statefulsets
+      - daemonsets
+    operations:
+      - CREATE
+      - UPDATE
+  - apiGroups:
+      - batch
+    apiVersions:
+      - v1
+    resources:
+      - jobs
+      - cronjobs
+    operations:
+      - CREATE
+      - UPDATE
 mutating: false
 contextAware: false
 annotations:
@@ -22,12 +45,13 @@ annotations:
   io.artifacthub.displayName: Pod Privileged Policy
   io.artifacthub.resources: Pod
   io.artifacthub.keywords: psp, pod, container, privileged
+  # kubewarden specific
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/pod-privileged
-  # io.kubewarden.hidden-ui: "true"
-  # rest
   io.kubewarden.policy.title: pod-privileged-policy
   io.kubewarden.policy.description: Limit the ability to create privileged containers
-  io.kubewarden.policy.author: "Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>"
+  io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.url: https://github.com/kubewarden/pod-privileged-policy
   io.kubewarden.policy.source: https://github.com/kubewarden/pod-privileged-policy
   io.kubewarden.policy.license: Apache-2.0
+  io.kubewarden.policy.category: PSP
+  io.kubewarden.policy.severity: medium
