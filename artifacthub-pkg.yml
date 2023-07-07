@@ -4,16 +4,16 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 0.2.6
+version: 0.2.7
 name: pod-privileged-policy
 displayName: Pod Privileged Policy
-createdAt: 2023-07-07T16:33:19.153637178Z
+createdAt: 2023-07-07T18:59:23.762182168Z
 description: Limit the ability to create privileged containers
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/pod-privileged-policy
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/pod-privileged:v0.2.6
+  image: ghcr.io/kubewarden/policies/pod-privileged:v0.2.7
 keywords:
 - psp
 - pod
@@ -21,13 +21,13 @@ keywords:
 - privileged
 links:
 - name: policy
-  url: https://github.com/kubewarden/pod-privileged-policy/releases/download/v0.2.6/policy.wasm
+  url: https://github.com/kubewarden/pod-privileged-policy/releases/download/v0.2.7/policy.wasm
 - name: source
   url: https://github.com/kubewarden/pod-privileged-policy
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/pod-privileged:v0.2.6
+  kwctl pull ghcr.io/kubewarden/policies/pod-privileged:v0.2.7
   ```
 maintainers:
 - name: Kubewarden developers
