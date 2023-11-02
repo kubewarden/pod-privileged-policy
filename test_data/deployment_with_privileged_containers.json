@@ -2,8 +2,29 @@
   "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
   "kind": {
     "kind": "Deployment",
-    "version": "v1"
+    "version": "v1",
+    "group": "apps"
   },
+  "resource": {
+    "group": "apps",
+    "version": "v1",
+    "resource": "deployments"
+  },
+  "requestKind": {
+    "version": "v1",
+    "group": "apps",
+    "kind": "Deployment"
+  },
+  "userInfo": {
+    "username": "alice",
+    "uid": "alice-uid",
+    "groups": [
+      "system:authenticated"
+    ]
+  },
+  "name": "nginx",
+  "namespace": "default",
+  "operation": "CREATE",
   "object": {
     "metadata": {
       "name": "nginx"
@@ -23,17 +44,5 @@
         }
       }
     }
-  },
-  "operation": "CREATE",
-  "requestKind": {
-    "version": "v1",
-    "kind": "Deployment"
-  },
-  "userInfo": {
-    "username": "alice",
-    "uid": "alice-uid",
-    "groups": [
-      "system:authenticated"
-    ]
   }
 }

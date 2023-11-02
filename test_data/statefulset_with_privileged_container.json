@@ -2,7 +2,26 @@
   "uid": "1299d386-525b-4032-98ae-1949f69f9cfc",
   "kind": {
     "kind": "StatefulSet",
-    "version": "v1"
+    "version": "v1",
+    "group": "apps"
+  },
+  "resource": {
+    "group": "apps",
+    "version": "v1",
+    "resource": "statefulsets"
+  },
+  "operation": "CREATE",
+  "requestKind": {
+    "group": "apps",
+    "version": "v1",
+    "kind": "StatefulSet"
+  },
+  "userInfo": {
+    "username": "alice",
+    "uid": "alice-uid",
+    "groups": [
+      "system:authenticated"
+    ]
   },
   "object": {
     "metadata": {
@@ -23,17 +42,5 @@
         }
       }
     }
-  },
-  "operation": "CREATE",
-  "requestKind": {
-    "version": "v1",
-    "kind": "StatefulSet"
-  },
-  "userInfo": {
-    "username": "alice",
-    "uid": "alice-uid",
-    "groups": [
-      "system:authenticated"
-    ]
   }
 }
