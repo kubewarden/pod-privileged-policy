@@ -24,7 +24,14 @@ configured as privileged in their [SecurityContext](https://kubernetes.io/docs/t
 
 # Settings
 
-This policy has no configurable settings.
+The policy has two configurations:
+- `skip_init_containers`: if set to `true` instructs the policy to ignore that
+  some init container is configured as privileged. Default value is `false`
+- `skip_ephemeral_containers`: if set to `true` instructs the policy to ignore
+  that some ephemeral container is configured as privileged. Default value is
+  `false`
+
+The main containers of the pod will always be validated.
 
 The user is responsible to configure the policy defining the resources targeted
 by the policy. Otherwise, the policy will not be able to run. The current supported
