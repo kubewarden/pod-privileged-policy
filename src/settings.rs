@@ -4,7 +4,10 @@ use serde::{Deserialize, Serialize};
 // loaded by the policy server.
 #[derive(Serialize, Deserialize, Default, Debug)]
 #[serde(default)]
-pub(crate) struct Settings {}
+pub(crate) struct Settings {
+    pub skip_init_containers: bool,
+    pub skip_ephemeral_containers: bool,
+}
 
 impl kubewarden::settings::Validatable for Settings {
     fn validate(&self) -> Result<(), String> {
@@ -21,7 +24,9 @@ mod tests {
 
     #[test]
     fn validate_settings() -> Result<(), ()> {
-        let settings = Settings {};
+        let settings = Settings {
+            ..Default::default()
+        };
 
         assert!(settings.validate().is_ok());
         Ok(())
