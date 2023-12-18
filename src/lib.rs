@@ -100,522 +100,158 @@ fn validate_container(container: &apicore::Container) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use rstest::rstest;
 
-    #[test]
-    fn accept_pod_when_all_ephemeral_containers_are_not_privileged_test() -> Result<()> {
-        let result = validate_pod(
-            &apicore::PodSpec {
-                ephemeral_containers: Some(vec![
-                    apicore::EphemeralContainer {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::EphemeralContainer::default()
-                    },
-                    apicore::EphemeralContainer {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::EphemeralContainer::default()
-                    },
-                    apicore::EphemeralContainer {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::EphemeralContainer::default()
-                    },
-                ]),
-                ..apicore::PodSpec::default()
-            },
-            &Settings::default(),
-        );
-        assert!(
-            result.is_ok(),
-            "Pod with no privileged ephemeral container should be accepted by the validator"
-        );
-        Ok(())
-    }
+    fn pod_factory(
+        containers_privileged: Option<Vec<bool>>,
+        init_container_privileged: Option<Vec<bool>>,
+        ephemeral_container_privileged: Option<Vec<bool>>,
+    ) -> apicore::PodSpec {
+        let mut containers: Vec<apicore::Container> = Vec::new();
+        let mut init_containers: Option<Vec<apicore::Container>> = None;
+        let mut ephemeral_containers: Option<Vec<apicore::EphemeralContainer>> = None;
 
-    #[test]
-    fn reject_pod_when_all_ephemeral_container_is_privileged_test() -> Result<()> {
-        let result = validate_pod(
-            &apicore::PodSpec {
-                ephemeral_containers: Some(vec![
-                    apicore::EphemeralContainer {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(true),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::EphemeralContainer::default()
-                    },
-                    apicore::EphemeralContainer {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(true),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::EphemeralContainer::default()
-                    },
-                    apicore::EphemeralContainer {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(true),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::EphemeralContainer::default()
-                    },
-                ]),
-                ..apicore::PodSpec::default()
-            },
-            &Settings::default(),
-        );
-        assert!(
-            result.is_err(),
-            "Pod with all privileged ephemeral container should be rejected by the validator"
-        );
-        Ok(())
-    }
-
-    #[test]
-    fn reject_pod_when_one_ephemeral_container_is_privileged_test() -> Result<()> {
-        let result = validate_pod(
-            &apicore::PodSpec {
-                ephemeral_containers: Some(vec![
-                    apicore::EphemeralContainer {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::EphemeralContainer::default()
-                    },
-                    apicore::EphemeralContainer {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::EphemeralContainer::default()
-                    },
-                    apicore::EphemeralContainer {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(true),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::EphemeralContainer::default()
-                    },
-                ]),
-                ..apicore::PodSpec::default()
-            },
-            &Settings::default(),
-        );
-        assert!(result.is_err(),
-            "Pod with only a single privileged ephemeral container should be rejected by the validator"
-        );
-        Ok(())
-    }
-
-    #[test]
-    fn accept_pod_when_init_containers_are_not_privileged_test() -> Result<()> {
-        let result = validate_pod(
-            &apicore::PodSpec {
-                init_containers: Some(vec![
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                ]),
-                ..apicore::PodSpec::default()
-            },
-            &Settings::default(),
-        );
-        assert!(
-            result.is_ok(),
-            "Pod with no privileged init container should be accepted by the validator"
-        );
-        Ok(())
-    }
-
-    #[test]
-    fn reject_pod_when_one_init_container_is_privileged_test() -> Result<()> {
-        let result = validate_pod(
-            &apicore::PodSpec {
-                init_containers: Some(vec![
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(true),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                ]),
-                ..apicore::PodSpec::default()
-            },
-            &Settings::default(),
-        );
-        assert!(
-            result.is_err(),
-            "Pod with only a single privileged init container should be rejected by the validator"
-        );
-        Ok(())
-    }
-
-    #[test]
-    fn accept_pod_when_containers_are_privileged_and_policy_should_ignore_test() {
-        let result = validate_pod(
-            &apicore::PodSpec {
-                containers: vec![apicore::Container {
+        if let Some(containers_values) = containers_privileged {
+            containers = containers_values
+                .into_iter()
+                .map(|privileged| apicore::Container {
                     security_context: Some(apicore::SecurityContext {
-                        privileged: Some(false),
+                        privileged: Some(privileged),
                         ..apicore::SecurityContext::default()
                     }),
                     ..apicore::Container::default()
-                }],
-                init_containers: Some(vec![
-                    apicore::Container {
+                })
+                .collect();
+        }
+        if let Some(ephemeral_container_privileged_values) = ephemeral_container_privileged {
+            ephemeral_containers = Some(
+                ephemeral_container_privileged_values
+                    .into_iter()
+                    .map(|privileged| apicore::EphemeralContainer {
                         security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(true),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                ]),
-                ephemeral_containers: Some(vec![
-                    apicore::EphemeralContainer {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
+                            privileged: Some(privileged),
                             ..apicore::SecurityContext::default()
                         }),
                         ..apicore::EphemeralContainer::default()
-                    },
-                    apicore::EphemeralContainer {
+                    })
+                    .collect(),
+            );
+        }
+        if let Some(init_container_privileged_values) = init_container_privileged {
+            init_containers = Some(
+                init_container_privileged_values
+                    .into_iter()
+                    .map(|privileged| apicore::Container {
                         security_context: Some(apicore::SecurityContext {
-                            privileged: Some(true),
+                            privileged: Some(privileged),
                             ..apicore::SecurityContext::default()
                         }),
-                        ..apicore::EphemeralContainer::default()
-                    },
-                ]),
-                ..apicore::PodSpec::default()
-            },
-            &Settings {
-                skip_init_containers: true,
-                skip_ephemeral_containers: true,
-            },
-        );
-        assert!(
-            result.is_ok(),
-            "Pod should be accepted if settings is configured to ignore init and ephemeral containers"
-        );
+                        ..apicore::Container::default()
+                    })
+                    .collect(),
+            );
+        }
+        apicore::PodSpec {
+            containers,
+            ephemeral_containers,
+            init_containers,
+            ..Default::default()
+        }
     }
 
-    #[test]
-    fn reject_pod_when_all_init_containers_are_privileged_test() -> Result<()> {
-        let result = validate_pod(
-            &apicore::PodSpec {
-                init_containers: Some(vec![
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(true),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(true),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(true),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                ]),
-                ..apicore::PodSpec::default()
-            },
-            &Settings::default(),
-        );
-        assert!(
-            result.is_err(),
-            "Pod with all privileged init containers should be rejected by the validator"
-        );
-        Ok(())
+    #[rstest]
+    #[case::accept_pod_when_all_ephemeral_containers_are_not_privileged_test2(pod_factory(None, None, Some(vec![false,false,false])), Settings::default(), Ok(true), "Pod with no privileged ephemeral container should be accepted by the validator")]
+    #[case::reject_pod_when_all_ephemeral_container_is_privileged_test(pod_factory(None, None, Some(vec![true, true, true])), Settings::default(), Err(anyhow!("")), "Pod with all privileged ephemeral container should be rejected by the validator")]
+    #[case::reject_pod_when_one_ephemeral_container_is_privileged_test(pod_factory(None, None, Some(vec![false, false, true])), Settings::default(), Err(anyhow!("")), "Pod with only a single privileged ephemeral container should be rejected by the validator")]
+    #[case::accept_pod_when_init_containers_are_not_privileged_test(pod_factory(None, Some(vec![false, false, false]), None), Settings::default(), Ok(true), "Pod with no privileged init container should be accepted by the validator")]
+    #[case::reject_pod_when_one_init_container_is_privileged_test(pod_factory(None, Some(vec![false, false, true]), None), Settings::default(), Err(anyhow!("")), "Pod with only a single privileged init container should be rejected by the validator")]
+    #[case::accept_pod_when_containers_are_privileged_and_policy_should_ignore_test(pod_factory(Some(vec![false]), Some(vec![false, true]), Some(vec![false, true])), Settings { skip_init_containers: true, skip_ephemeral_containers: true, }, Ok(true), "Pod should be accepted if settings is configured to ignore init and ephemeral containers")]
+    #[case::reject_pod_when_all_init_containers_are_privileged_test(pod_factory(None, Some(vec![true, true, true]), None), Settings::default(), Err(anyhow!("")), "Pod with all privileged init containers should be rejected by the validator")]
+    #[case::accecpt_pod_when_containers_are_not_privileged_test(pod_factory(Some(vec![false, false, false]), None, None), Settings::default(), Ok(true), "Pod with no privileged container should be accepted by the validator")]
+    #[case::reject_pod_when_one_container_is_privileged_test(pod_factory(Some(vec![false, false, true]), None, None), Settings::default(), Err(anyhow!("")), "Pod with only a single privileged container should be rejected by the validator")]
+    #[case::reject_pod_when_all_containers_are_privileged_test(pod_factory(Some(vec![true, true, true]), None, None), Settings::default(), Err(anyhow!("")), "Pod with all privileged containers should be rejected by the validator")]
+    fn validate_pod_test(
+        #[case] pod_spec: apicore::PodSpec,
+        #[case] settings: Settings,
+        #[case] expected_result: anyhow::Result<bool>,
+        #[case] error_msg: String,
+    ) {
+        let result = validate_pod(&pod_spec, &settings);
+        match expected_result {
+            Ok(_) => assert!(result.is_ok(), "{}", error_msg.to_owned()),
+            Err(_) => assert!(result.is_err(), "{}", error_msg.to_owned()),
+        }
     }
 
-    #[test]
-    fn accecpt_pod_when_containers_are_not_privileged_test() -> Result<()> {
-        let result = validate_pod(
-            &apicore::PodSpec {
-                containers: vec![
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                ],
-                ..apicore::PodSpec::default()
-            },
-            &Settings::default(),
-        );
-        assert!(
-            result.is_ok(),
-            "Pod with no privileged container should be accepted by the validator"
-        );
-        Ok(())
-    }
-
-    #[test]
-    fn reject_pod_when_one_container_is_privileged_test() -> Result<()> {
-        let result = validate_pod(
-            &apicore::PodSpec {
-                containers: vec![
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(false),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(true),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                ],
-                ..apicore::PodSpec::default()
-            },
-            &Settings::default(),
-        );
-
-        assert!(
-            result.is_err(),
-            "Pod with only a single privileged container should be rejected by the validator"
-        );
-        Ok(())
-    }
-
-    #[test]
-    fn reject_pod_when_all_containers_are_privileged_test() -> Result<()> {
-        let result = validate_pod(
-            &apicore::PodSpec {
-                containers: vec![
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(true),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(true),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                    apicore::Container {
-                        security_context: Some(apicore::SecurityContext {
-                            privileged: Some(true),
-                            ..apicore::SecurityContext::default()
-                        }),
-                        ..apicore::Container::default()
-                    },
-                ],
-                ..apicore::PodSpec::default()
-            },
-            &Settings::default(),
-        );
-        assert!(
-            result.is_err(),
-            "Pod with all privileged containers should be rejected by the validator"
-        );
-        Ok(())
-    }
-
-    #[test]
-    fn accept_container_is_not_privileged_test() -> Result<()> {
-        assert_eq!(
-            validate_container(&apicore::Container {
-                security_context: Some(apicore::SecurityContext {
-                    privileged: Some(false),
-                    ..apicore::SecurityContext::default()
-                }),
-                ..apicore::Container::default()
+    fn container_factory(privileged: Option<bool>) -> apicore::Container {
+        apicore::Container {
+            security_context: Some(apicore::SecurityContext {
+                privileged,
+                ..apicore::SecurityContext::default()
             }),
-            true,
-            "Non privileged container should be accepted by the validator"
-        );
-        Ok(())
+            ..apicore::Container::default()
+        }
     }
 
-    #[test]
-    fn accept_container_with_no_security_context() -> Result<()> {
+    #[rstest]
+    #[case::accept_container_is_not_privileged_test(
+        container_factory(Some(false)),
+        true,
+        "Non privileged container should be accepted by the validator"
+    )]
+    #[case::accept_container_with_no_security_context(apicore::Container { ..apicore::Container::default() }, true, "Non privileged container should be accepted by the validator")]
+    #[case::reject_privileged_container_test(
+        container_factory(Some(true)),
+        false,
+        "Privileged container should be rejected by the validator"
+    )]
+    #[case::accept_privileged_container_when_privileged_is_none_test(container_factory(None), true, "Privileged container should be accepted by the validator when there is no 'privileged' configuration. The default behaviour is disable privileged containers")]
+    fn validate_container_test(
+        #[case] container: apicore::Container,
+        #[case] expected_result: bool,
+        #[case] error_msg: String,
+    ) {
         assert_eq!(
-            validate_container(&apicore::Container {
-                ..apicore::Container::default()
-            }),
-            true,
-            "Non privileged container should be accepted by the validator"
-        );
-        Ok(())
+            validate_container(&container),
+            expected_result,
+            "{}",
+            error_msg
+        )
     }
 
-    #[test]
-    fn reject_privileged_container_test() -> Result<()> {
-        assert_eq!(
-            validate_container(&apicore::Container {
-                security_context: Some(apicore::SecurityContext {
-                    privileged: Some(true),
-                    ..apicore::SecurityContext::default()
-                }),
-                ..apicore::Container::default()
+    fn ephemeral_container_factory(privileged: Option<bool>) -> apicore::EphemeralContainer {
+        apicore::EphemeralContainer {
+            security_context: Some(apicore::SecurityContext {
+                privileged,
+                ..apicore::SecurityContext::default()
             }),
-            false,
-            "Privileged container should be rejected by the validator"
-        );
-        Ok(())
+            ..apicore::EphemeralContainer::default()
+        }
     }
 
-    #[test]
-    fn accept_privileged_container_when_privileged_is_none_test() -> Result<()> {
+    #[rstest]
+    #[case::accept_ephemeral_container_is_not_privileged_test(
+        ephemeral_container_factory(Some(false)),
+        true,
+        "Non privileged container should be accepted by the validator"
+    )]
+    #[case::accept_ephemeral_container_with_no_security_context(apicore::EphemeralContainer { ..apicore::EphemeralContainer::default() }, true, "Non privileged container should be accepted by the validator")]
+    #[case::reject_privileged_ephemeral_container_test(
+        ephemeral_container_factory(Some(true)),
+        false,
+        "Privileged container should be rejected by the validator"
+    )]
+    #[case::accept_privileged_ephemeral_container_when_privileged_is_none_test(ephemeral_container_factory(None), true, "Privileged container should be accepted by the validator when there is no 'privileged' configuration. The default behaviour is disable privileged containers")]
+    fn validate_ephemeral_container_test(
+        #[case] container: apicore::EphemeralContainer,
+        #[case] expected_result: bool,
+        #[case] error_msg: String,
+    ) {
         assert_eq!(
-            validate_container(&apicore::Container {
-                security_context: Some(apicore::SecurityContext {
-                    privileged: None,
-                    ..apicore::SecurityContext::default()
-                }),
-                ..apicore::Container::default()
-            }),
-            true,
-            "Privileged container should be accepted by the validator when there is no 'privileged' configuration. The default behaviour is disable privileged containers"
+            validate_ephemeral_container(&container),
+            expected_result,
+            "{}",
+            error_msg
         );
-        Ok(())
-    }
-
-    #[test]
-    fn accept_ephemeral_container_is_not_privileged_test() -> Result<()> {
-        assert_eq!(
-            validate_ephemeral_container(&apicore::EphemeralContainer {
-                security_context: Some(apicore::SecurityContext {
-                    privileged: Some(false),
-                    ..apicore::SecurityContext::default()
-                }),
-                ..apicore::EphemeralContainer::default()
-            }),
-            true,
-            "Non privileged container should be accepted by the validator"
-        );
-        Ok(())
-    }
-
-    #[test]
-    fn accept_ephemeral_container_with_no_security_context() -> Result<()> {
-        assert_eq!(
-            validate_ephemeral_container(&apicore::EphemeralContainer {
-                ..apicore::EphemeralContainer::default()
-            }),
-            true,
-            "Non privileged container should be accepted by the validator"
-        );
-        Ok(())
-    }
-
-    #[test]
-    fn reject_privileged_ephemeral_container_test() -> Result<()> {
-        assert_eq!(
-            validate_ephemeral_container(&apicore::EphemeralContainer {
-                security_context: Some(apicore::SecurityContext {
-                    privileged: Some(true),
-                    ..apicore::SecurityContext::default()
-                }),
-                ..apicore::EphemeralContainer::default()
-            }),
-            false,
-            "Privileged container should be rejected by the validator"
-        );
-        Ok(())
-    }
-
-    #[test]
-    fn accept_privileged_ephemeral_container_when_privileged_is_none_test() -> Result<()> {
-        assert_eq!(
-            validate_ephemeral_container(&apicore::EphemeralContainer {
-                security_context: Some(apicore::SecurityContext {
-                    privileged: None,
-                    ..apicore::SecurityContext::default()
-                }),
-                ..apicore::EphemeralContainer::default()
-            }),
-            true,
-            "Privileged container should be accepted by the validator when there is no 'privileged' configuration. The default behaviour is disable privileged containers"
-        );
-        Ok(())
     }
 }
