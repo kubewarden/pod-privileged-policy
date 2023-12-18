@@ -47,3 +47,17 @@
   [ $(expr "$output" : '.*allowed.*false') -ne 0 ]
   [ $(expr "$output" : '.*Privileged container is not allowed*') -ne 0 ]
 }
+
+@test "accept privileged init container when required" {
+  run kwctl run annotated-policy.wasm -r test_data/privileged_init_container.json --settings-path test_data/settings_skip_init_and_ephemeral_containers.json
+  # request accepted
+  [ "$status" -eq 0 ]
+  [ $(expr "$output" : '.*allowed.*true') -ne 0 ]
+}
+
+@test "accept privileged ephemeral container when required" {
+  run kwctl run annotated-policy.wasm -r test_data/privileged_ephemeral_container.json --settings-path test_data/settings_skip_init_and_ephemeral_containers.json
+  # request accepted
+  [ "$status" -eq 0 ]
+  [ $(expr "$output" : '.*allowed.*true') -ne 0 ]
+}

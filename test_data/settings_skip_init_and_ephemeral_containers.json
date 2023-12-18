@@ -1,0 +1,4 @@
+{
+	"skip_init_containers": true,
+	"skip_ephemeral_containers": true
+}
