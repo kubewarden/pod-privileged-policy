@@ -4,16 +4,16 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 0.3.0
+version: 0.3.1
 name: pod-privileged-policy
 displayName: Pod Privileged Policy
-createdAt: 2023-12-19T16:36:22.009478594Z
+createdAt: 2024-01-04T15:12:05.850009857Z
 description: Limit the ability to create privileged containers
 license: Apache-2.0
 homeURL: https://github.com/kubewarden/pod-privileged-policy
 containersImages:
 - name: policy
-  image: ghcr.io/kubewarden/policies/pod-privileged:v0.3.0
+  image: ghcr.io/kubewarden/policies/pod-privileged:v0.3.1
 keywords:
 - psp
 - pod
@@ -21,17 +21,17 @@ keywords:
 - privileged
 links:
 - name: policy
-  url: https://github.com/kubewarden/pod-privileged-policy/releases/download/v0.3.0/policy.wasm
+  url: https://github.com/kubewarden/pod-privileged-policy/releases/download/v0.3.1/policy.wasm
 - name: source
   url: https://github.com/kubewarden/pod-privileged-policy
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/kubewarden/policies/pod-privileged:v0.3.0
+  kwctl pull ghcr.io/kubewarden/policies/pod-privileged:v0.3.1
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/pod-privileged:v0.3.0
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/pod-privileged:v0.3.1
   ```
 maintainers:
 - name: Kubewarden developers
@@ -42,6 +42,24 @@ recommendations:
 - url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
 annotations:
   kubewarden/mutation: 'false'
+  kubewarden/questions-ui: |
+    questions:
+    - default: false
+      tooltip: >-
+        Ignore that some init container is configured as privileged
+      group: Settings
+      label: Skip init containers
+      required: false
+      type: boolean
+      variable: skip_init_containers
+    - default: false
+      tooltip: >-
+        Ignore that some ephemeral container is configured as privileged
+      group: Settings
+      label: Skip ephemeral containers
+      required: false
+      type: boolean
+      variable: skip_ephemeral_containers
   kubewarden/resources: Pod
   kubewarden/rules: |
     - apiGroups:
