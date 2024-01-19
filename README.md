@@ -40,40 +40,185 @@ configure a policy in the [Kubewarden documentation](https://docs.kubewarden.io/
 
 # Examples
 
-The following Pod specification doesn't have any security context defined:
+Let's define the policy and see how the validation works:
 
-```yaml
-apiVersion: v1
-kind: Pod
+```console
+kubectl apply -f - <<EOF
+apiVersion: policies.kubewarden.io/v1
+kind: ClusterAdmissionPolicy
 metadata:
-  name: nginx
+  annotations:
+    io.kubewarden.policy.category: PSP
+    io.kubewarden.policy.severity: medium
+  name: pod-privileged-policy
 spec:
-  containers:
-  - name: nginx
-    image: nginx
-    imagePullPolicy: IfNotPresent
+  module: registry://ghcr.io/kubewarden/policies/pod-privileged:v0.3.1
+  settings: {}
+  rules:
+  - apiGroups:
+    - ''
+    apiVersions:
+    - v1
+    resources:
+    - pods
+    operations:
+    - CREATE
+  - apiGroups:
+    - ''
+    apiVersions:
+    - v1
+    resources:
+    - replicationcontrollers
+    operations:
+    - CREATE
+    - UPDATE
+  - apiGroups:
+    - apps
+    apiVersions:
+    - v1
+    resources:
+    - deployments
+    - replicasets
+    - statefulsets
+    - daemonsets
+    operations:
+    - CREATE
+    - UPDATE
+  - apiGroups:
+    - batch
+    apiVersions:
+    - v1
+    resources:
+    - jobs
+    - cronjobs
+    operations:
+    - CREATE
+    - UPDATE
+  mutating: false
+EOF
 ```
 
-This workload can be scheduled by all the users of the cluster.
+After the policy is running and active, we apply the following Pod specification which doesn't 
+have any security context defined. Therefore, it should be accepted by the policy
+and it can be scheduled by the users of the cluster:
 
-This Pod specification has one of its containers running in
-privileged mode and it will be rejected by the policy:
-
-```yaml
+```console
+kubectl apply -f - <<EOF
 apiVersion: v1
 kind: Pod
 metadata:
   name: nginx
 spec:
-  runtimeClassName: containerd-runc
   containers:
   - name: nginx
     image: nginx
-    imagePullPolicy: IfNotPresent
+EOF
+
+pod/nginx created
+```
+
+However, the next Pod specification has one of its containers running in
+privileged mode and it will be rejected by the policy:
+
+```console
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
     securityContext:
       privileged: true
   - name: sleeping-sidecar
     image: alpine
     command: ["sleep", "1h"]
+EOF
+
+Error from server: error when creating "STDIN": admission webhook "clusterwide-pod-privileged-policy.kubewarden.admission" denied the request: Privileged container is not allowed
 ```
+
+The next pod does not have a privileged container. But there is a init
+container requesting privileged access. Therefore, this will be rejected by the
+policy as well:
+
+
+```console
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  initContainers:
+  - name: nginx-init
+    image: nginx
+    securityContext:
+      privileged: true
+  - name: sleeping-sidecar-init
+    image: alpine
+    command: ["sleep", "1h"]
+  containers:
+  - name: sleeping-sidecar
+    image: alpine
+    command: ["sleep", "1h"]
+EOF
+
+Error from server: error when creating "STDIN": admission webhook "clusterwide-pod-privileged-policy.kubewarden.admission" denied the request: Privileged init container is not allowed
+```
+
+However, if this privileged init container is expected and it must be run with
+privileged access, you can instruct the policy to ignore init containers:
+
+```console
+kubectl patch clusteradmissionpolicies pod-privileged-policy -p '{"spec":{"settings":{"skip_init_containers":true}}}' --type "merge"
+clusteradmissionpolicy.policies.kubewarden.io/pod-privileged-policy patched
+```
+
+Now the workload with privileged init container should be accepted:
+
+```console
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  initContainers:
+  - name: nginx-init
+    image: nginx
+    securityContext:
+      privileged: true
+  - name: sleeping-sidecar-init
+    image: alpine
+    command: ["sleep", "1h"]
+  containers:
+  - name: sleeping-sidecar
+    image: alpine
+    command: ["sleep", "1h"]
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  initContainers:
+  - name: nginx-init
+    image: nginx
+    securityContext:
+      privileged: true
+  - name: sleeping-sidecar-init
+    image: alpine
+    command: ["sleep", "1h"]
+  containers:
+  - name: sleeping-sidecar
+    image: alpine
+    command: ["sleep", "1h"]
+EOF
+
+pod/nginx created
+```
+
 
