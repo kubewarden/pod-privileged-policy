@@ -141,7 +141,7 @@ Error from server: error when creating "STDIN": admission webhook "clusterwide-p
 ```
 
 The next pod does not have a privileged container. But there is a init
-container requesting privileged access. Therefore, this will be reject by the
+container requesting privileged access. Therefore, this will be rejected by the
 policy as well:
 
 
