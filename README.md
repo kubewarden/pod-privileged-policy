@@ -40,7 +40,7 @@ configure a policy in the [Kubewarden documentation](https://docs.kubewarden.io/
 
 # Examples
 
-Let's define the policy and see what the validation works:
+Let's define the policy and see how the validation works:
 
 ```console
 kubectl apply -f - <<EOF
@@ -98,7 +98,7 @@ spec:
 EOF
 ```
 
-After the policy and running and active, the following Pod specification doesn't 
+After the policy is running and active, we apply the following Pod specification which doesn't 
 have any security context defined. Therefore, it should be accepted by the policy
 and it can be scheduled by the users of the cluster:
 
