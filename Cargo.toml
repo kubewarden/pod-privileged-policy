@@ -1,6 +1,6 @@
 [package]
 name = "pod-privileged-policy"
-version = "0.3.1"
+version = "0.3.2"
 authors = ["José Guilherme Vanz <jguilhermevanz@suse.com>"]
 edition = "2021"
 
