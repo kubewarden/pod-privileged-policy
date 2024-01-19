@@ -1,0 +1,103 @@
+# Kubewarden Artifacthub Package config
+#
+# Use this config to submit the policy to https://artifacthub.io.
+#
+# This config can be saved to its default location with:
+#   kwctl scaffold artifacthub > artifacthub-pkg.yml 
+version: 0.3.2
+name: pod-privileged-policy
+displayName: Pod Privileged Policy
+createdAt: 2024-01-19T18:22:16.325594015Z
+description: Limit the ability to create privileged containers
+license: Apache-2.0
+homeURL: https://github.com/kubewarden/pod-privileged-policy
+containersImages:
+- name: policy
+  image: ghcr.io/kubewarden/policies/pod-privileged:v0.3.2
+keywords:
+- psp
+- pod
+- container
+- privileged
+links:
+- name: policy
+  url: https://github.com/kubewarden/pod-privileged-policy/releases/download/v0.3.2/policy.wasm
+- name: source
+  url: https://github.com/kubewarden/pod-privileged-policy
+install: |
+  The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
+  ```console
+  kwctl pull ghcr.io/kubewarden/policies/pod-privileged:v0.3.2
+  ```
+  Then, generate the policy manifest and tune it to your liking. For example:
+  ```console
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/kubewarden/policies/pod-privileged:v0.3.2
+  ```
+maintainers:
+- name: Kubewarden developers
+  email: cncf-kubewarden-maintainers@lists.cncf.io
+provider:
+  name: kubewarden
+recommendations:
+- url: https://artifacthub.io/packages/helm/kubewarden/kubewarden-controller
+annotations:
+  kubewarden/mutation: 'false'
+  kubewarden/questions-ui: |
+    questions:
+    - default: false
+      tooltip: >-
+        Ignore that some init container is configured as privileged
+      group: Settings
+      label: Skip init containers
+      required: false
+      type: boolean
+      variable: skip_init_containers
+    - default: false
+      tooltip: >-
+        Ignore that some ephemeral container is configured as privileged
+      group: Settings
+      label: Skip ephemeral containers
+      required: false
+      type: boolean
+      variable: skip_ephemeral_containers
+  kubewarden/resources: Pod
+  kubewarden/rules: |
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - pods
+      operations:
+      - CREATE
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      resources:
+      - replicationcontrollers
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - apps
+      apiVersions:
+      - v1
+      resources:
+      - deployments
+      - replicasets
+      - statefulsets
+      - daemonsets
+      operations:
+      - CREATE
+      - UPDATE
+    - apiGroups:
+      - batch
+      apiVersions:
+      - v1
+      resources:
+      - jobs
+      - cronjobs
+      operations:
+      - CREATE
+      - UPDATE
