@@ -220,15 +220,28 @@ dependencies = [
 ]
 
 [[package]]
-name = "kubewarden-policy-sdk"
-version = "0.9.9"
+name = "k8s-openapi"
+version = "0.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "71cad7fdeb3c1228f62b7f7dc882e3be0e230596e0a9f7c1abd70689fc474d66"
+checksum = "301f367a36090b7dfdaac248ee3ed4f14a6a8292e7bec0f1c5e6e2e1f181cd33"
+dependencies = [
+ "base64",
+ "chrono",
+ "serde",
+ "serde-value",
+ "serde_json",
+]
+
+[[package]]
+name = "kubewarden-policy-sdk"
+version = "0.9.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "19701752dee8092ff54a1c4b6c4066911f21a16784274238b5f6823b6e4d017b"
 dependencies = [
  "anyhow",
  "cfg-if",
  "chrono",
- "k8s-openapi",
+ "k8s-openapi 0.21.0",
  "num",
  "num-derive",
  "num-traits",
@@ -416,7 +429,7 @@ name = "pod-privileged-policy"
 version = "0.3.2"
 dependencies = [
  "anyhow",
- "k8s-openapi",
+ "k8s-openapi 0.20.0",
  "kubewarden-policy-sdk",
  "lazy_static",
  "rstest",
@@ -427,18 +440,18 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.66"
+version = "1.0.78"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "18fb31db3f9bddb2ea821cde30a9f70117e3f119938b5ee630b7403aa6e2ead9"
+checksum = "e2422ad645d89c99f8f3e6b88a9fdeca7fabeac836b1002371c4367c8f984aae"
 dependencies = [
  "unicode-ident",
 ]
 
 [[package]]
 name = "quote"
-version = "1.0.33"
+version = "1.0.35"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5267fca4496028628a95160fc423a33e8b2e6af8a5302579e322e4b520293cae"
+checksum = "291ec9ab5efd934aaf503a6466c5d5251535d108ee747472c3977cc5acc868ef"
 dependencies = [
  "proc-macro2",
 ]
@@ -545,9 +558,9 @@ checksum = "836fa6a3e1e547f9a2c4040802ec865b5d85f4014efe00555d7090a3dcaa1090"
 
 [[package]]
 name = "serde"
-version = "1.0.193"
+version = "1.0.195"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "25dd9975e68d0cb5aa1120c288333fc98731bd1dd12f561e468ea4728c042b89"
+checksum = "63261df402c67811e9ac6def069e4786148c4563f4b50fd4bf30aa370d626b02"
 dependencies = [
  "serde_derive",
 ]
@@ -564,9 +577,9 @@ dependencies = [
 
 [[package]]
 name = "serde_derive"
-version = "1.0.193"
+version = "1.0.195"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "43576ca501357b9b071ac53cdc7da8ef0cbd9493d8df094cd821777ea6e894d3"
+checksum = "46fe8f8603d81ba86327b23a2e9cdf49e1255fb94a4c5f297f6ee0547178ea2c"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -586,9 +599,9 @@ dependencies = [
 
 [[package]]
 name = "serde_yaml"
-version = "0.9.27"
+version = "0.9.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3cc7a1570e38322cfe4154732e5110f887ea57e22b76f4bfd32b5bdd3368666c"
+checksum = "b1bf28c79a99f70ee1f1d83d10c875d2e70618417fda01ad1785e027579d9d38"
 dependencies = [
  "indexmap",
  "itoa",
@@ -620,9 +633,9 @@ checksum = "62bb4feee49fdd9f707ef802e22365a35de4b7b299de4763d44bfea899442ff9"
 
 [[package]]
 name = "syn"
-version = "2.0.32"
+version = "2.0.48"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "239814284fd6f1a4ffe4ca893952cdd93c224b6a1571c9a9eadd670295c0c9e2"
+checksum = "0f3531638e407dfc0814761abb7c00a5b54992b849452a0646b7f65c9f770f3f"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -667,9 +680,9 @@ dependencies = [
 
 [[package]]
 name = "unsafe-libyaml"
-version = "0.2.9"
+version = "0.2.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f28467d3e1d3c6586d8f25fa243f544f5800fec42d97032474e17222c2b75cfa"
+checksum = "ab4c90930b95a82d00dc9e9ac071b4991924390d46cbd0dfe566148667605e4b"
 
 [[package]]
 name = "url"
