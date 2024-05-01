@@ -10,7 +10,7 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-anyhow = "1.0"
+anyhow = "1.0.82"
 k8s-openapi = { version = "0.21.1", default_features = false, features = [
   "v1_29",
 ] }
