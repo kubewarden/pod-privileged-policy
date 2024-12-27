@@ -309,15 +309,28 @@ dependencies = [
 ]
 
 [[package]]
-name = "kubewarden-policy-sdk"
-version = "0.11.2"
+name = "k8s-openapi"
+version = "0.24.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "072bb84ba4dae1ffba3158a5d43e891ce32f55bae5659e2723cbb7891c5eb5cb"
+checksum = "2c75b990324f09bef15e791606b7b7a296d02fc88a344f6eba9390970a870ad5"
+dependencies = [
+ "base64",
+ "chrono",
+ "serde",
+ "serde-value",
+ "serde_json",
+]
+
+[[package]]
+name = "kubewarden-policy-sdk"
+version = "0.11.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "07b12fa5556b12e26d07b12fb258bd1f16b7d7b14a5df3998ea43125f43fc186"
 dependencies = [
  "anyhow",
  "cfg-if",
  "chrono",
- "k8s-openapi",
+ "k8s-openapi 0.24.0",
  "num",
  "num-derive",
  "num-traits",
@@ -522,7 +535,7 @@ name = "pod-privileged-policy"
 version = "0.3.2"
 dependencies = [
  "anyhow",
- "k8s-openapi",
+ "k8s-openapi 0.23.0",
  "kubewarden-policy-sdk",
  "lazy_static",
  "rstest",
