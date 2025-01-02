@@ -8,7 +8,8 @@
     "area/dependencies"
   ],
   "lockFileMaintenance": {
-    "enabled": true
+    "enabled": true,
+    "schedule": ["at any time"]
   },
   "rebaseWhen": "behind-base-branch",
   "automerge": true
