@@ -9,7 +9,7 @@
   ],
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["at any time"]
+    "schedule": ["before 4am on monday"]
   },
   "rebaseWhen": "behind-base-branch",
   "automerge": true
