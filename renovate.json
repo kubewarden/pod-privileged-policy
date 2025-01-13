@@ -2,15 +2,31 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    "helpers:pinGitHubActionDigests"
+    "helpers:pinGitHubActionDigests",
+    "schedule:nonOfficeHours"
   ],
   "labels": [
     "area/dependencies"
   ],
+  "major": {
+    "automerge": false,
+    "extends": [
+      "schedule:earlyMondays"
+    ]
+  },
+  "minor": {
+    "automerge": true
+  },
+  "patch": {
+    "automerge": true
+  },
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["before 4am on monday"]
+    "automerge": true
   },
   "rebaseWhen": "behind-base-branch",
-  "automerge": true
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 0,
+  "semanticCommits": "enabled",
+  "semanticCommitType": "chore"
 }
