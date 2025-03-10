@@ -1,32 +1,13 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
-    "helpers:pinGitHubActionDigests",
-    "schedule:nonOfficeHours"
+    "github>kubewarden/github-actions//renovate-config/policies"
   ],
-  "labels": [
-    "area/dependencies"
-  ],
-  "major": {
-    "automerge": false,
-    "extends": [
-      "schedule:earlyMondays"
-    ]
-  },
-  "minor": {
-    "automerge": true
-  },
-  "patch": {
-    "automerge": true
-  },
-  "lockFileMaintenance": {
-    "enabled": true,
-    "automerge": true
-  },
-  "rebaseWhen": "behind-base-branch",
-  "prHourlyLimit": 0,
-  "prConcurrentLimit": 0,
-  "semanticCommits": "enabled",
-  "semanticCommitType": "chore"
+  "packageRules": [
+    {
+      "description": "Update GitHub Actions",
+      "matchManagers": ["github-actions"],
+      "groupName": "github-actions",
+      "groupSlug": "github-actions"
+    }
+  ]
 }
