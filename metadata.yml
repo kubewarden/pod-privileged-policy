@@ -49,7 +49,7 @@ annotations:
   # kubewarden specific
   io.kubewarden.policy.ociUrl: ghcr.io/kubewarden/policies/pod-privileged
   io.kubewarden.policy.title: pod-privileged-policy
-  io.kubewarden.policy.version: 1.0.5
+  io.kubewarden.policy.version: 1.0.6
   io.kubewarden.policy.description: Limit the ability to create privileged containers
   io.kubewarden.policy.author: Kubewarden developers <cncf-kubewarden-maintainers@lists.cncf.io>
   io.kubewarden.policy.url: https://github.com/kubewarden/pod-privileged-policy
